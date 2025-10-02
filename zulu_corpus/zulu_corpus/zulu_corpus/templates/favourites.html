@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="favourites-container">
+    <h2>Your Favourite Words</h2>
+    
+    {% if favourites %}
+    <div class="favourites-info">
+        <p>You have <strong>{{ favourites|length }}</strong> favourite word(s)</p>
+    </div>
+    
+    <ul class="word-list">
+        {% for favourite in favourites %}
+        <li class="word-item">
+            <div class="word-header">
+                <span class="word-zulu">{{ favourite.word.zulu_word }}</span>
+                <span class="word-translations">
+                    <span class="word-english">{{ favourite.word.english_translation }}</span>
+                    {% if favourite.word.swati_translation %}
+                    <span class="word-swati">{{ favourite.word.swati_translation }}</span>
+                    {% endif %}
+                    {% if favourite.word.sotho_translation %}
+                    <span class="word-swati">{{ favourite.word.sotho_translation }}</span>
+                    {% endif %}
+                </span>
+                <div class="word-actions">
+                    <button class="tts-btn" data-text="{{ favourite.word.zulu_word }}">🔊</button>
+                    <button class="fav-btn active" data-word-id="{{ favourite.word.id }}">★</button>
+                </div>
+            </div>
+            <div class="word-details">
+                <p><strong>Part of Speech:</strong> {{ favourite.word.part_of_speech }}</p>
+                {% if favourite.word.pronunciation_guide %}
+                <p><strong>Pronunciation:</strong> {{ favourite.word.pronunciation_guide }}</p>
+                {% endif %}
+                {% if favourite.word.cultural_context %}
+                <p><strong>Cultural Context:</strong> {{ favourite.word.cultural_context }}</p>
+                {% endif %}
+            </div>
+            <div class="word-footer">
+                <a href="{% url 'word_detail' favourite.word.id %}" class="btn btn-outline">View Details</a>
+                <span class="favourite-date">Added on {{ favourite.date_added|date:"M d, Y" }}</span>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">☆</div>
+        <h3>No Favourites Yet</h3>
+        <p>You have not added any words to your favourites yet.</p>
+        <p>Start exploring the <a href="{% url 'search' %}">corpus</a> to find words to save!</p>
+        <div class="empty-tips">
+            <h4>Tips:</h4>
+            <ul>
+                <li>Click the star icon (☆) next to any word to add it to favourites</li>
+                <li>Favourites are saved to your account and accessible from any device</li>
+                <li>Use favourites to build your personal vocabulary list</li>
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
