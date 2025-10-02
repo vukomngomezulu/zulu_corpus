@@ -22,7 +22,7 @@ class PageLoadPerformanceTests(TestCase):
         
         load_time = end_time - start_time
         
-        # Handle both 200 (direct access) and 302 (redirect) cases
+      
         if response.status_code == 302:
             # Follow the redirect and test that page
             redirect_response = self.client.get(response.url)
